@@ -1,0 +1,66 @@
+POST school/_doc/5
+{
+  "title" : "School 5",
+  "address" : "Dhaka, Bangladesh",
+  "rating" : "5.9"
+}
+
+GET school/_search
+{
+"query": {
+  "match_all": {}
+}
+}
+
+GET school/_search?q=rating:5
+{
+  "sort": [
+    {
+      "rating": {
+        "order": "desc"
+      }
+    }
+  ], 
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET school/_search?q=rating:asc
+{
+"query": {
+  "match_all": {}
+}
+}
+
+GET school/_search?size=0
+{
+"aggs": {
+  "total_rating": {
+    "min": {
+      "field": "rating"
+    }
+  }
+}
+}
+
+GET /school/_settings
+GET /school/_stats
+GET /school/_flush
+GET /_cat/indices?v
+GET /_cat/nodes?h=ip,port
+GET /_cat/count?v
+GET /_nodes/_local
+GET /_cluster/health
+
+POST /school/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "4",
+      "fields": ["title","rating"]
+    }
+  }
+}
+
+GET /school/_mapping

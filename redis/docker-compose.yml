@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+    server:
+        image: redis:alpine
+        container_name: redis
+        network_mode: 18series
+        hostname: redis
+        ports:
+            - 6379:6379
