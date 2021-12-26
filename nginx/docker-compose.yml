@@ -10,8 +10,8 @@ services:
     networks:
       - 18series
     ports:
-      - "8185:80"
-      - "8186:8186"
+      - "8180:80"
+      - "8181:8186"
     links:
       - php
     depends_on:
