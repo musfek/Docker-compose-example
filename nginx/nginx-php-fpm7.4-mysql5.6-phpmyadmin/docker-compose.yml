@@ -1,0 +1,58 @@
+version: "3.7"
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./code:/code
+      - ./config/site.conf:/etc/nginx/conf.d/site.conf
+    networks:
+      - 18series
+    ports:
+      - "8180:80"
+      - "8181:8186"
+    links:
+      - php
+    depends_on:
+      - php
+      - db
+  php:
+    container_name: php74
+    image: php:7.4.0-fpm
+    volumes:
+      - ./code:/code
+    networks:
+      - 18series
+    ports:
+      - "9000:9000"
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    networks:
+      - 18series
+    ports:
+      - 3316:3306
+    hostname: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: musfek
+      MYSQL_PASSWORD: 12345
+    volumes:
+      - ./db:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - 8182:80
+    environment:
+      - PMA_HOST:mysql
+      - PMA_PASSWORD:${MYSQL_ROOT_PASSWORD}
+    networks:
+      - 18series
+networks:
+  18series:
+    external: true
+    driver: bridge
